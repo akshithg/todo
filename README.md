@@ -1,47 +1,81 @@
-# A simple command line task manager
+# `todo` : minimal command line to-do manager
 
-Built with Rust
+Built with Rust by a Rust n00b
 
-## A super simple tool
+`todo` is a very minimal tool to manage your to-do list
 
 1. Just a text file
-    - `task` uses a simple text file `todo.txt` to store your tasks
-    - you can sync the file with version control or any cloud drive of your choice
-    - bulk edit the `todo.txt` file directly with any text editor
+    - `todo` uses a simple text file `todo.txt` to store your todos
+    - you can sync the file with version control or any cloud drive of your choice for cross-platform access
+    - you can also bulk edit the `todo.txt` file directly with any text editor
 
 2. No projects, no tags, no priorities built in
-    - it is a super simple tool
-    - but if you need them it is not hard either with a combination of `!status`, `#topic`, `@person` and `grep`
+    - who wants to waste another
+    - it is a minimal tool
+    - but if you need them you can use these [tricks](#tricks) and `grep`
 
 ## Command line interface
-This is a very simple command line task manager
-Main set of features include
-1. add a new task
+You can do 4 basic actions
+1. `add` a new todo
     ```
-    $ task write project readme
-    $ task --add write project readme
-    1 - mail tax docs
-    2 - write project readme
+    $ todo add "mail tax forms"
+    0 - write project readme
+    1 - mail tax forms
     ```
-2. view all tasks
+2. `list` all todos
     ```
-    $ task
-    $ task --list/-l
+    $ todo list
+    0 - write project readme
+    1 - mail tax forms
     ```
-3. edit an existing task
+3. `edit` an existing todo
     ```
-    $ task --edit/-e 2 write tasks project readme
-    1 - mail tax docs
-    2 - write tasks project readme
+    $ todo edit 0 "write todo project readme"
+    0 - write todo project readme
+    1 - mail tax forms
     ```
-4. make a task complete
+4. make a todo `done`
     ```
-    $ task --done/-d 1
-    1 - write tasks project readme
+    $ todo done 0
+    0 - mail tax forms
     ```
+### Install
 
-## Usage
+```
+cargo install --git https://github.com/akshithg/todo --branch main
+```
 
-1. Installing
-2. Setting up an alias
-3. Customization
+### Aliasing
+add these to your .bashrc, .zshrc
+```
+alias ll='todo list'
+alias lla='todo add'
+alias lle='todo edit'
+alias lld='todo done'
+```
+
+### tricks
+
+to add features such as **assignee**, **topic** etc. you can use a combination of special characters and `grep`
+
+```
+$ todo add "update project readme @me #work"
+$ todo add "review pull request @jhon #work"
+$ todo add "buy grocerries for dinner @me #home"
+```
+
+get `#work` todos
+```
+$ todo list | grep "#work"
+
+update project readme @me #work
+todo add "review pull request @jhon #work
+```
+
+get todos assigned to `@me`
+```
+$ todo list | grep "@me"
+
+update project readme @me #work
+buy grocerries for dinner @me #home
+```
