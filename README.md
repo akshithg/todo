@@ -18,7 +18,7 @@ Built with Rust by a Rust n00b
 You can do 4 basic actions
 1. `add` a new todo
     ```
-    $ todo add "mail tax forms"
+    $ todo add mail tax forms
     0 - write project readme
     1 - mail tax forms
     ```
@@ -30,7 +30,7 @@ You can do 4 basic actions
     ```
 3. `edit` an existing todo
     ```
-    $ todo edit 0 "write todo project readme"
+    $ todo edit 0 write todo project readme
     0 - write todo project readme
     1 - mail tax forms
     ```
@@ -59,23 +59,32 @@ alias lld='todo done'
 to add features such as **assignee**, **topic** etc. you can use a combination of special characters and `grep`
 
 ```
-$ todo add "update project readme @me #work"
-$ todo add "review pull request @jhon #work"
-$ todo add "buy grocerries for dinner @me #home"
+$ todo add update project readme @me #work
+$ todo add review pull request @jhon #work
+$ todo add buy grocerries for dinner @me #home
+```
+
+get all todos
+```
+$ todo list
+
+0 - update project readme @me #work
+1 - review pull request @jhon #work
+2 - buy grocerries for dinner @me #home
 ```
 
 get `#work` todos
 ```
-$ todo list | grep "#work"
+$ todo list | grep #work
 
-update project readme @me #work
-todo add "review pull request @jhon #work
+0 - update project readme @me #work
+1 - review pull request @jhon #work
 ```
 
 get todos assigned to `@me`
 ```
-$ todo list | grep "@me"
+$ todo list | grep @me
 
-update project readme @me #work
-buy grocerries for dinner @me #home
+0 - update project readme @me #work
+2 - buy grocerries for dinner @me #home
 ```

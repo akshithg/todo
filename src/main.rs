@@ -11,13 +11,13 @@ enum Cli {
     },
     Add {
         #[structopt()]
-        task: String,
+        task: Vec<String>,
     },
     Edit {
         #[structopt()]
         id: usize,
         #[structopt()]
-        task: String,
+        task: Vec<String>,
     },
     Done {
         #[structopt()]
@@ -52,12 +52,12 @@ fn main() {
     match Cli::from_args() {
         Cli::Add { task } => {
             let mut todos = todos;
-            todos.push(task);
+            todos.push(task.join(" "));
             put_todos_to(todo_file, todos).unwrap();
         },
         Cli::Edit { id, task } => {
             let mut todos = todos;
-            todos[id] = task;
+            todos[id] = task.join(" ");
             put_todos_to(todo_file, todos).unwrap();
         },
         Cli::Done { id } => {
