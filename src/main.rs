@@ -1,6 +1,6 @@
 use std::{
     fs::File,
-    io::{self, BufRead, BufReader},
+    io::{self, BufRead, BufReader, BufWriter, Write},
     path::Path,
 };
 use structopt::StructOpt;
@@ -15,20 +15,28 @@ enum Cli {
     },
     Edit {
         #[structopt()]
-        id: i32,
+        id: usize,
         #[structopt()]
         task: String,
     },
     Done {
         #[structopt()]
-        id: i32,
+        id: usize,
     },
 }
 
-fn load_todos_from(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
+fn get_todos_from(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
     BufReader::new(File::open(filename)?).lines().collect()
 }
 
+fn put_todos_to(filename: impl AsRef<Path>, todos: Vec<String>) -> io::Result<()> {
+    let file = File::create(filename).unwrap();
+    let mut buf = BufWriter::new(file);
+    for todo in todos {
+        writeln!(buf, "{}", todo).expect("Failed to write");
+    }
+    Ok(())
+}
 
 fn print_todos(todos: Vec<String>) {
     for (index, todo) in todos.iter().enumerate() {
@@ -37,18 +45,25 @@ fn print_todos(todos: Vec<String>) {
 }
 
 fn main() {
-    let todos = load_todos_from("todo.txt").expect("Could not load lines");
+    let todo_file = "todo.txt";
+    let todos = get_todos_from(todo_file).expect("Could not load lines");
 
     // command line arguments
     match Cli::from_args() {
         Cli::Add { task } => {
-            println!("New task: {}", task)
+            let mut todos = todos;
+            todos.push(task);
+            put_todos_to(todo_file, todos).unwrap();
         },
         Cli::Edit { id, task } => {
-            println!("Edit task: {} {}", id, task)
+            let mut todos = todos;
+            todos[id] = task;
+            put_todos_to(todo_file, todos).unwrap();
         },
         Cli::Done { id } => {
-            println!("Done task: {}", id)
+            let mut todos = todos;
+            todos.remove(id);
+            put_todos_to(todo_file, todos).unwrap();
         },
         Cli::List {} => {
             print_todos(todos);
