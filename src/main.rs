@@ -7,11 +7,14 @@ use structopt::StructOpt;
 
 #[derive(StructOpt)]
 enum Cli {
-    List {
-    },
     Add {
         #[structopt()]
         task: Vec<String>,
+    },
+    Clear {},
+    Done {
+        #[structopt()]
+        id: usize,
     },
     Edit {
         #[structopt()]
@@ -19,10 +22,7 @@ enum Cli {
         #[structopt()]
         task: Vec<String>,
     },
-    Done {
-        #[structopt()]
-        id: usize,
-    },
+    List {},
 }
 
 fn get_todos_from(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
@@ -55,14 +55,18 @@ fn main() {
             todos.push(task.join(" "));
             put_todos_to(todo_file, todos).unwrap();
         },
-        Cli::Edit { id, task } => {
-            let mut todos = todos;
-            todos[id] = task.join(" ");
+        Cli::Clear {} => {
+            let todos = vec![];
             put_todos_to(todo_file, todos).unwrap();
         },
         Cli::Done { id } => {
             let mut todos = todos;
             todos.remove(id);
+            put_todos_to(todo_file, todos).unwrap();
+        },
+        Cli::Edit { id, task } => {
+            let mut todos = todos;
+            todos[id] = task.join(" ");
             put_todos_to(todo_file, todos).unwrap();
         },
         Cli::List {} => {

@@ -15,7 +15,7 @@ Built with Rust by a Rust n00b
     - but if you need them you can use these [tricks](#tricks) and `grep`
 
 ## Command line interface
-You can do 4 basic actions
+You can do 5 basic actions
 1. `add` a new todo
     ```
     $ todo add mail tax forms
@@ -39,6 +39,11 @@ You can do 4 basic actions
     $ todo done 0
     0 - mail tax forms
     ```
+5. clear all tasks
+    ```
+    $ todo clear
+    ```
+
 ### Install
 
 ```
@@ -52,6 +57,7 @@ alias ll='todo list'
 alias lla='todo add'
 alias lle='todo edit'
 alias lld='todo done'
+alias llc='todo clear'
 ```
 
 ### tricks
